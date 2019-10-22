@@ -1,6 +1,5 @@
 from Xlib import display, X
 from Xlib.ext.xtest import fake_input
-from PIL import Image
 import cv2
 import numpy
 
@@ -12,7 +11,7 @@ def find_best(needle, haystack):
 def screencap(x, y, w, h):
     root = display.Display().screen().root
     raw = root.get_image(x, y, w, h, X.ZPixmap, 0xffffffff)
-    return Image.frombytes("RGB", (w, h), raw.data, "raw", "BGRX")
+    return numpy.fromstring(raw.data, dtype=numpy.uint8).reshape(h, w, 4)[:, :, :3]
 
 def mouse_move(x, y):
     disp = display.Display()
